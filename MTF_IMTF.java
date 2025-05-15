@@ -1,8 +1,18 @@
+/*
+Autor: Nelson García Bravatti
+22434
+
+Análisis y diseño de algoritmos
+Proyecto 3
+*/
+
+
 import java.util.*;
 
 public class MTF_IMTF {
 
     public static void main(String[] args) {
+        // Menú principal del programa, se puede elegir entre MTF o IMTF
         Scanner sc = new Scanner(System.in);
         while (true) {
             System.out.println("\n=== Menú Principal ===");
@@ -22,6 +32,7 @@ public class MTF_IMTF {
     }
 
     private static void submenu(Scanner sc, boolean isMTF) {
+        //Sub menú, aquí se elige que par lista de configuración/secuencia de solicitudes de número se va a probar
         while (true) {
             System.out.println("\n--- Submenú " + (isMTF ? "MTF" : "IMTF") + " ---");
             System.out.println("1. Inputs personalizados");
@@ -32,6 +43,7 @@ public class MTF_IMTF {
             sc.nextLine(); // consumir newline
             if (sub == 3) return;
 
+            //Se inicializan la lista y secuencia
             List<Integer> config;
             List<Integer> seq;
 
@@ -39,17 +51,21 @@ public class MTF_IMTF {
                 // Leer lista de configuración
                 System.out.print("Ingrese la lista de configuración (ej: 0,1,2,3,4): ");
                 config = parseLine(sc.nextLine());
+                // Leer secuencia de solicitudes
                 System.out.print("Ingrese la secuencia de solicitudes (ej: 0,1,2,3,4,0,1...): ");
                 seq = parseLine(sc.nextLine());
             } else {
-                // Dos casos predefinidos
+                // Opciones para probar
                 System.out.println("Casos disponibles:");
                 System.out.println("1) Pregunta 1");
                 System.out.println("2) Pregunta 2");
+                System.out.println("3) Best-case");
+                System.out.println("4) Worst-case");
+                System.out.println("5) Pregunta 5 secuencia de 2");
+                System.out.println("6) Pregunta 5 secuencia de 3");
                 System.out.print("Elija caso: ");
                 int preset = sc.nextInt();
-                switch (present) {
-
+                switch (preset) {
                     case 1:
                         config = Arrays.asList(0, 1, 2, 3, 4);
                         seq = Arrays.asList(0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4);
@@ -60,21 +76,33 @@ public class MTF_IMTF {
                         break;
                     case 3:
                         config = Arrays.asList(0, 1, 2, 3, 4);
-                        seq = (1, 2);
+                        seq = Arrays.asList(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+                        break;
+                    case 4:
+                        config = Arrays.asList(0, 1, 2, 3, 4);
+                        seq = Arrays.asList(4, 3, 2, 1, 0, 4, 3, 2, 1, 0, 4, 3, 2, 1, 0, 4, 3, 2, 1, 0);
+                        break;
+                    case 5:
+                        config = Arrays.asList(0, 1, 2, 3, 4);
+                        seq = Arrays.asList(2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2);
+                        break;
+                    case 6:
+                        config = Arrays.asList(0, 1, 2, 3, 4);
+                        seq = Arrays.asList(3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3);
                         break;
                     default:
-                        System.out.println("Ingrese por favor una de las opciones.")
-                        break;
+                        System.out.println("Ingrese por favor una de las opciones.");
+                        continue;
                 }
             }
-
-            // Ejecutar
+            // Ejecutar algoritmo
             if (isMTF) runMTF(new ArrayList<>(config), seq);
-            else        runIMTF(new ArrayList<>(config), seq);
+            else    runIMTF(new ArrayList<>(config), seq);
         }
     }
 
     private static List<Integer> parseLine(String line) {
+        //Parsea la líneaa ingresada por el usuario para poder ser usada en el algoritmo
         String[] parts = line.trim().split("\\s*,\\s*");
         List<Integer> result = new ArrayList<>();
         for (String p : parts) {
@@ -84,6 +112,7 @@ public class MTF_IMTF {
     }
 
     private static void runMTF(List<Integer> list, List<Integer> seq) {
+        //Algoritmo MTF
         System.out.println("\n>>> Ejecutando MTF");
         int totalCost = 0;
         for (int req : seq) {
@@ -92,6 +121,7 @@ public class MTF_IMTF {
             int pos = list.indexOf(req);
             int cost = pos + 1;
             System.out.println("Costo de acceso: " + cost);
+            // Se suma al costo total de acceso
             totalCost += cost;
             // mover al frente
             list.remove(pos);
@@ -102,6 +132,7 @@ public class MTF_IMTF {
     }
 
     private static void runIMTF(List<Integer> list, List<Integer> seq) {
+        // Algoritmo IMT
         System.out.println("\n>>> Ejecutando IMTF");
         int totalCost = 0;
         for (int i = 0; i < seq.size(); i++) {
@@ -120,6 +151,7 @@ public class MTF_IMTF {
                     break;
                 }
             }
+            // Si cumple, se mueve el número
             if (mover) {
                 list.remove(pos);
                 list.add(0, req);
