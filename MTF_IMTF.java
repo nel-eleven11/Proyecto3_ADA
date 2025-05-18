@@ -119,8 +119,8 @@ public class MTF_IMTF {
             System.out.println("Lista antes: " + list);
             System.out.println("Buscando: " + req);
             int pos = list.indexOf(req);
-            int cost = pos + 1;
-            System.out.println("Costo de acceso: " + cost);
+            int cost = (2 * (pos + 1)) - 1;
+            System.out.println("Costo de acceso y movimiento: " + cost);
             // Se suma al costo total de acceso
             totalCost += cost;
             // mover al frente
@@ -128,7 +128,7 @@ public class MTF_IMTF {
             list.add(0, req);
             System.out.println("Lista después: " + list + "\n");
         }
-        System.out.println("Costo total de acceso: " + totalCost);
+        System.out.println("Costo total de acceso y movimiento: " + totalCost);
     }
 
     private static void runIMTF(List<Integer> list, List<Integer> seq) {
@@ -140,12 +140,10 @@ public class MTF_IMTF {
             System.out.println("Lista antes: " + list);
             System.out.println("Buscando: " + req);
             int pos = list.indexOf(req);
-            int cost = pos + 1;
-            System.out.println("Costo de acceso: " + cost);
-            totalCost += cost;
-            // look-ahead de (cost - 1) elementos
+            int cost = 0;
+            // look-ahead de pos elementos
             boolean mover = false;
-            for (int j = i+1; j < seq.size() && j <= i + cost - 1; j++) {
+            for (int j = i+1; j < seq.size() && j <= i + pos; j++) {
                 if (seq.get(j) == req) {
                     mover = true;
                     break;
@@ -156,11 +154,17 @@ public class MTF_IMTF {
                 list.remove(pos);
                 list.add(0, req);
                 System.out.println("Se mueve al frente: sí");
+                cost = (2 * (pos + 1)) - 1;
+                System.out.println("Costo de acceso y movimiento: " + cost);
+                totalCost += cost;
             } else {
                 System.out.println("Se mueve al frente: no");
+                cost = pos + 1;
+                System.out.println("Costo de acceso y movimiento: " + cost);
+                totalCost += cost;
             }
             System.out.println("Lista después: " + list + "\n");
         }
-        System.out.println("Costo total de acceso: " + totalCost);
+        System.out.println("Costo total de acceso y movimiento: " + totalCost);
     }
 }
