@@ -160,7 +160,7 @@ public class MTF_IMTF {
             } else {
                 System.out.println("Se mueve al frente: no");
                 cost = pos + 1;
-                System.out.println("Costo de acceso y movimiento: " + cost);
+                System.out.println("Costo de acceso: " + cost);
                 totalCost += cost;
             }
             System.out.println("Lista después: " + list + "\n");
